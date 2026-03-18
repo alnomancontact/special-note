@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Meow Question for You 🐾</title>
+    <style>
+        :root {
+            --bg-color: #fff0f6;
+            --accent-pink: #ff4d94;
+            --soft-pink: #ffb6c1;
+            --glow-color: rgba(255, 182, 193, 0.6);
+        }
+
+        body { 
+            background-color: var(--bg-color); 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            margin: 0; 
+            font-family: 'Comic Sans MS', 'Chalkboard SE', cursive; 
+            overflow: hidden; 
+            transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            /* Reset to default standard cursor */
+            cursor: default;
+        }
+
+        .background-visuals {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 50%, #fffaff 0%, #fff0f6 100%);
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: var(--soft-pink);
+            font-size: 20px;
+            opacity: 0.4;
+            animation: floatUp 6s infinite ease-in;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) translateX(0); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) translateX(50px); opacity: 0; }
+        }
+
+        .container { 
+            text-align: center; 
+            position: relative; 
+            z-index: 10; 
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 40px;
+            box-shadow: 0 15px 35px var(--glow-color), inset 0 0 20px rgba(255,255,255,0.5);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 400px;
+        }
+
+        #display-image { 
+            width: 200px; 
+            height: 200px;
+            object-fit: contain;
+            filter: drop-shadow(0 5px 10px var(--soft-pink));
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        h1 { 
+            color: var(--accent-pink); 
+            font-size: 2.2rem; 
+            margin: 15px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .buttons { 
+            display: flex; 
+            gap: 20px; 
+            justify-content: center; 
+            margin-top: 20px;
+            min-height: 60px;
+        }
+
+        button { 
+            padding: 15px 35px; 
+            font-size: 1.3rem; 
+            border: none; 
+            border-radius: 30px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        #yesBtn { background: linear-gradient(135deg, #ff85a2, #ff4d94); color: white; }
+        #yesBtn:hover { transform: translateY(-5px) scale(1.1); box-shadow: 0 10px 20px var(--glow-color); }
+
+        #noBtn { background-color: #5d6d7e; color: white; position: relative; z-index: 999; }
+
+        #extra-content {
+            display: none;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-top: 20px;
+            opacity: 0;
+            transition: opacity 1.5s ease-in;
+        }
+
+        .side-card {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 20px;
+            border: 1px dashed var(--soft-pink);
+            text-align: left;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+        }
+
+        .side-card img { width: 100%; border-radius: 15px; margin-bottom: 10px; }
+        .letter-text { font-size: 0.95rem; color: #d63384; line-height: 1.5; }
+
+        .butterfly { 
+            position: fixed; 
+            font-size: 35px; 
+            animation: fly 12s infinite ease-in-out; 
+            opacity: 0.7; 
+            z-index: 5;
+            filter: drop-shadow(0 0 5px white);
+        }
+
+        @keyframes fly {
+            0% { transform: translate(-10vw, 80vh) rotate(0deg) scale(0.8); }
+            33% { transform: translate(40vw, 30vh) rotate(20deg) scale(1); }
+            66% { transform: translate(70vw, 60vh) rotate(-20deg) scale(0.9); }
+            100% { transform: translate(110vw, 10vh) rotate(10deg) scale(1.1); }
+        }
+
+        .sparkle { position: fixed; pointer-events: none; font-size: 15px; animation: fadeOut 1s forwards; }
+        @keyframes fadeOut { to { transform: translateY(-50px) scale(1.5); opacity: 0; } }
+    </style>
+</head>
+<body>
+
+    <div class="background-visuals" id="bgVisuals"></div>
+
+    <div class="butterfly" style="left: 5%; animation-delay: 0s;">🦋</div>
+    <div class="butterfly" style="left: 20%; animation-delay: 5s;">🦋</div>
+    <div class="butterfly" style="left: 70%; animation-delay: 2s;">🦋</div>
+    <div class="butterfly" style="left: 85%; animation-delay: 8s;">🦋</div>
+
+    <audio id="bgMusic" loop>
+        <source src="music/sweet-melody.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="container" id="mainContainer">
+        <img id="display-image" src="images/cat.jpg" alt="Cute Cat">
+        <h1 id="questionText">Do you meow me? 🐾</h1>
+        <div class="buttons" id="btnGroup">
+            <button id="yesBtn" onclick="celebrate()">Yes!</button>
+            <button id="noBtn" onclick="moveButton()" onmouseover="moveButton()">No</button>
+        </div>
+
+        <div id="extra-content">
+            <div class="side-card">
+                <p class="letter-text">
+                    <b>Dear Sahiba,</b><br><br>
+                    You're Special to me <br>
+                    You're the only one <br>
+                    I wouldn't mind losing sleep for.<br>
+                    The only one I can never get tired of taking to.<br>
+                    You're the only one who can make me smile without trying.<br>
+                    I cann't explain with jus words<br>
+                    how much you mean to me.<br>
+                    But you're the only one I afraid losing,<br>
+                    and the one I want to keep in my life.🌸<br><br>
+                                                       -Sahib
+                </p>
+            </div>
+            <div class="side-card" style="text-align: center;">
+                <img src="images/IMG_2706.jpg" alt="Her Photo">
+                <p style="font-size: 0.8rem; margin: 0; color: #ff4d94;"><b> Prettiest butterfly 🦋</b></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+    const music = document.getElementById('bgMusic');
+
+    document.addEventListener('click', () => {
+        music.volume = 0.3;
+        music.play().catch(e => console.log("Interaction required"));
+    }, { once: true });
+
+    const bgVisuals = document.getElementById('bgVisuals');
+    for (let i = 0; i < 15; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'floating-heart';
+        heart.innerHTML = '🌸';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDelay = Math.random() * 5 + 's';
+        bgVisuals.appendChild(heart);
+    }
+
+    document.addEventListener('mousemove', function(e) {
+        if (Math.random() > 0.8) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.innerHTML = '💖';
+            sparkle.style.left = (e.pageX - 2) + 'px';
+            sparkle.style.top = (e.pageY - 2) + 'px';
+            document.body.appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), 1000);
+        }
+    });
+
+    let noBtnActive = false;
+
+    function moveButton() {
+        const btn = document.getElementById('noBtn');
+        
+        // Setup button for free movement on first interaction
+        if (!noBtnActive) {
+            const rect = btn.getBoundingClientRect();
+            btn.style.position = 'fixed';
+            btn.style.left = rect.left + 'px';
+            btn.style.top = rect.top + 'px';
+            btn.style.margin = '0'; 
+            btn.style.transition = "all 0.2s ease-out"; 
+            noBtnActive = true;
+        }
+
+        const btnWidth = btn.offsetWidth;
+        const btnHeight = btn.offsetHeight;
+        
+        // Define safe area within the window
+        const padding = 50; 
+        const maxWidth = window.innerWidth - btnWidth - padding;
+        const maxHeight = window.innerHeight - btnHeight - padding;
+
+        // Get current position
+        let currentX = parseFloat(btn.style.left);
+        let currentY = parseFloat(btn.style.top);
+
+        // Calculate a dodge distance
+        const dodge = 150;
+        
+        // Determine random directions
+        let moveX = (Math.random() < 0.5 ? -1 : 1) * dodge;
+        let moveY = (Math.random() < 0.5 ? -1 : 1) * dodge;
+
+        let newX = currentX + moveX;
+        let newY = currentY + moveY;
+
+        // BOUNDARY CHECK: If out of bounds, bounce back to a random safe spot in the middle
+        if (newX < padding || newX > maxWidth) {
+            newX = Math.random() * (maxWidth - padding) + padding;
+        }
+        if (newY < padding || newY > maxHeight) {
+            newY = Math.random() * (maxHeight - padding) + padding;
+        }
+
+        btn.style.left = newX + 'px';
+        btn.style.top = newY + 'px';
+    }
+
+    function celebrate() {
+        const img = document.getElementById('display-image');
+        const text = document.getElementById('questionText');
+        const btnGroup = document.getElementById('btnGroup');
+        const container = document.getElementById('mainContainer');
+        const extra = document.getElementById('extra-content');
+        const noBtn = document.getElementById('noBtn');
+
+        if(noBtn) noBtn.style.display = 'none';
+
+        img.src = "images/catt.jpg";
+        text.innerHTML = "I meow you too! ❤️";
+        text.style.color = "#ff1a75";
+        
+        btnGroup.style.display = "none";
+        container.style.maxWidth = "800px";
+        
+        extra.style.display = "flex";
+        setTimeout(() => { extra.style.opacity = "1"; }, 100);
+
+        document.body.style.backgroundColor = "#ffd1dc";
+        img.style.transform = "scale(1.1)";
+
+        var count = 250;
+        var defaults = { origin: { y: 0.7 }, colors: ['#ff4d94', '#ff85a2', '#ffffff'] };
+        function fire(particleRatio, opts) {
+            confetti(Object.assign({}, defaults, opts, { particleCount: Math.floor(count * particleRatio) }));
+        }
+        fire(0.25, { spread: 26, startVelocity: 55 });
+        fire(0.2, { spread: 60 });
+        fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+        fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+        fire(0.1, { spread: 120, startVelocity: 45 });
+    }
+</script>
+</body>
+</html>
