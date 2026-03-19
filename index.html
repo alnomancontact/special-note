@@ -148,24 +148,28 @@
         /* Updated Responsive adjustment for Mobile */
 @media (max-width: 600px) {
     body {
-        /* Allow page to scroll when content is long */
         overflow-y: auto !important; 
+        display: flex; /* Keep flex to allow centering */
+        flex-direction: column;
+        justify-content: center; /* This centers it vertically */
+        align-items: center;
+        min-height: 100vh; /* Takes full screen height */
         height: auto;
-        min-height: 100vh;
-        display: block; /* Changes from flex to allow normal scrolling flow */
-        padding: 20px 0;
+        padding: 40px 0; /* Adds space at top/bottom when scrolling */
     }
 
     .container {
-        margin: 20px auto;
+        margin: auto; /* The magic line for perfect centering */
         width: 90%;
         max-width: 380px !important;
-        height: auto; /* Let the height expand */
+        height: auto; 
         padding: 25px;
+        position: relative;
+        top: -20px; /* Slight manual nudge up to account for visual weight */
     }
 
     #extra-content {
-        flex-direction: column-reverse; /* Keeps photo above note */
+        flex-direction: column-reverse; 
         align-items: center;
         gap: 20px;
     }
