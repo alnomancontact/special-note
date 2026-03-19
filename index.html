@@ -145,32 +145,38 @@
         .sparkle { position: fixed; pointer-events: none; font-size: 15px; animation: fadeOut 1s forwards; }
         @keyframes fadeOut { to { transform: translateY(-50px) scale(1.5); opacity: 0; } }
 
-        /* Responsive adjustment for Mobile */
+        /* Updated Responsive adjustment for Mobile */
 @media (max-width: 600px) {
+    body {
+        /* Allow page to scroll when content is long */
+        overflow-y: auto !important; 
+        height: auto;
+        min-height: 100vh;
+        display: block; /* Changes from flex to allow normal scrolling flow */
+        padding: 20px 0;
+    }
+
     .container {
-        padding: 20px;
+        margin: 20px auto;
         width: 90%;
-        margin: 10px;
+        max-width: 380px !important;
+        height: auto; /* Let the height expand */
+        padding: 25px;
     }
 
     #extra-content {
-        flex-direction: column-reverse; /* Flips the order: Photo (last in HTML) goes to top */
+        flex-direction: column-reverse; /* Keeps photo above note */
         align-items: center;
-        gap: 15px;
+        gap: 20px;
     }
 
     .side-card {
         width: 100%;
-        box-sizing: border-box;
     }
 
     #display-image {
-        width: 150px;
-        height: 150px;
-    }
-
-    h1 {
-        font-size: 1.6rem;
+        width: 160px;
+        height: 160px;
     }
 }
     </style>
@@ -315,7 +321,12 @@
         text.style.color = "#ff1a75";
         
         btnGroup.style.display = "none";
-        container.style.maxWidth = "800px";
+        // On PC it goes wide, on mobile it stays contained
+if (window.innerWidth > 600) {
+    container.style.maxWidth = "800px";
+} else {
+    container.style.maxWidth = "90%";
+}
         
         extra.style.display = "flex";
         setTimeout(() => { extra.style.opacity = "1"; }, 100);
