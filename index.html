@@ -144,6 +144,35 @@
 
         .sparkle { position: fixed; pointer-events: none; font-size: 15px; animation: fadeOut 1s forwards; }
         @keyframes fadeOut { to { transform: translateY(-50px) scale(1.5); opacity: 0; } }
+
+        /* Responsive adjustment for Mobile */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+        width: 90%;
+        margin: 10px;
+    }
+
+    #extra-content {
+        flex-direction: column-reverse; /* Flips the order: Photo (last in HTML) goes to top */
+        align-items: center;
+        gap: 15px;
+    }
+
+    .side-card {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    #display-image {
+        width: 150px;
+        height: 150px;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+}
     </style>
 </head>
 <body>
